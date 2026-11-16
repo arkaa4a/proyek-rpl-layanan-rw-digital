@@ -1,0 +1,402 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          String  @id @default(uuid())
+  name        String  @unique // SUPER_ADMIN, ADMIN_RW, KETUA_RW, KETUA_RT, WARGA
+  description String?
+
+  users User[]
+}
+
+model Rw {
+  id        String   @id @default(uuid())
+  nomor     String   @unique // e.g. "01"
+  namaKetua String?
+  kelurahan String?
+  kecamatan String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rts             Rt[]
+  users           User[] // Pengurus tingkat RW
+  lingkunganInfos LingkunganInfo[]
+  pengumuman      Pengumuman[]
+  pengaduan       Pengaduan[]
+}
+
+model Rt {
+  id          String   @id @default(uuid())
+  rwId        String
+  nomor       String // e.g. "01"
+  namaKetua   String?
+  namaWilayah String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  rw        Rw          @relation(fields: [rwId], references: [id])
+  warga     Warga[]
+  users     User[] // Pengurus tingkat RT
+  pengaduan Pengaduan[]
+  targetPengumuman Pengumuman[]
+
+  @@unique([rwId, nomor]) // Kombinasi RW dan RT harus unik
+}
+
+model Keluarga {
+  id        String   @id @default(uuid())
+  nomorKk   String   @unique
+  alamat    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  warga Warga[]
+}
+
+model Warga {
+  id           String    @id @default(uuid())
+  nik          String    @unique
+  namaLengkap  String
+  tempatLahir  String?
+  tanggalLahir DateTime?
+  agama        String?
+  pekerjaan    String?
+  email        String?
+  noWhatsapp   String?
+  notifyEmail  Boolean   @default(true)
+  notifyWhatsapp Boolean @default(true)
+  isActive     Boolean   @default(true)
+
+  keluargaId String?
+  rtId       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  keluarga Keluarga? @relation(fields: [keluargaId], references: [id])
+  rt       Rt?       @relation(fields: [rtId], references: [id])
+
+  user             User? // 1-to-1 dengan User
+  requests         Request[] // Relasi ke Request
+  pengaduan        Pengaduan[]
+  notificationLogs NotificationLog[]
+}
+
+model User {
+  id         String  @id @default(uuid())
+  username   String  @unique
+  password   String
+  roleId     String
+  email      String?
+  noWhatsapp String?
+  notifyEmail    Boolean @default(true)
+  notifyWhatsapp Boolean @default(true)
+
+  // Relasi opsional ke entitas fisik (Kewenangan / Profil)
+  wargaId  String? @unique // Jika dia warga biasa, link ke profil warga
+  rwId     String? // Jika dia Admin/Ketua RW, scope-nya di RW mana
+  rtId     String? // Jika dia Ketua RT, scope-nya di RT mana
+  isActive Boolean @default(true) // Status aktif akun
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role  Role   @relation(fields: [roleId], references: [id])
+  warga Warga? @relation(fields: [wargaId], references: [id])
+  rw    Rw?    @relation(fields: [rwId], references: [id])
+  rt    Rt?    @relation(fields: [rtId], references: [id])
+
+  createdRequests  Request[]
+  requestHistories RequestHistory[]
+  auditLogs        AuditLog[]
+  lingkunganInfos  LingkunganInfo[]
+  pengumuman       Pengumuman[]
+  pengaduanHistory PengaduanHistory[]
+  notificationLogs NotificationLog[]
+}
+
+model ServiceType {
+  id           String  @id @default(uuid())
+  name         String
+  description  String?
+  requirements String? // JSON string array
+  formFields   String? // JSON string konfigurasi field
+  isActive     Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requests Request[]
+}
+
+model Request {
+  id             String  @id @default(uuid())
+  serviceTypeId  String
+  applicantId    String
+  createdById    String?
+  formData       String? // JSON string
+  status         String  @default("DRAFT") // DRAFT, SUBMITTED, PENDING_RT_VERIFICATION, REVISION_REQUIRED, VERIFIED_RT, PENDING_RW_APPROVAL, APPROVED, REJECTED, COMPLETED
+  documentNumber String? @unique
+  documentToken  String? @unique
+  documentStatus String? @default("ACTIVE") // ACTIVE, REVOKED, INVALID
+  qrCode         String? @unique
+  pdfUrl         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  serviceType ServiceType      @relation(fields: [serviceTypeId], references: [id])
+  applicant   Warga            @relation(fields: [applicantId], references: [id])
+  createdBy   User?            @relation(fields: [createdById], references: [id])
+  histories   RequestHistory[]
+}
+
+model DocumentSequence {
+  id         String @id @default(uuid())
+  rwId       String
+  year       Int
+  month      Int
+  lastNumber Int    @default(0)
+
+  @@unique([rwId, year, month])
+}
+
+model RequestHistory {
+  id          String   @id @default(uuid())
+  requestId   String
+  status      String
+  note        String?
+  createdById String?
+  createdAt   DateTime @default(now())
+
+  request   Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  createdBy User?   @relation(fields: [createdById], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  action    String // LOGIN, CREATE_USER, dll
+  userId    String?
+  details   String? // JSON string
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}
+
+model LingkunganInfo {
+  id          String   @id @default(uuid())
+  kategori    String // e.g. JADWAL, LAYANAN, PENGUMUMAN
+  judul       String
+  konten      String
+  isPublished Boolean  @default(true)
+  authorId    String?
+  rwId        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author User? @relation(fields: [authorId], references: [id])
+  rw     Rw?   @relation(fields: [rwId], references: [id])
+}
+
+model Pengumuman {
+  id              String   @id @default(uuid())
+  judul           String
+  konten          String
+  kategori        String
+  prioritas       Boolean  @default(false)
+  tanggalKegiatan String?
+  lokasiKegiatan  String?
+  authorId        String
+  authorRole      String?
+  rwId            String?
+  targetRtId      String?
+  isPublished     Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  author          User     @relation(fields: [authorId], references: [id])
+  rw              Rw?      @relation(fields: [rwId], references: [id])
+  targetRt        Rt?      @relation(fields: [targetRtId], references: [id])
+}
+
+model NotificationLog {
+  id            String    @id @default(uuid())
+  type          String    // PENGUMUMAN, PENGAJUAN_SURAT, PENGADUAN
+  channel       String    // EMAIL, WHATSAPP
+  recipient     String    // Alamat email atau nomor WhatsApp penerima
+  recipientName String?   // Nama penerima
+  subject       String    // Judul notifikasi
+  content       String    // Ringkasan isi notifikasi
+  status        String    @default("PENDING") // PENDING, SENT, FAILED
+  errorMessage  String?   // Pesan error jika gagal (tanpa kredensial/rahasia)
+  referenceId   String?   // Idempotency key untuk cegah duplikasi: misal "PENGUMUMAN_{id}_{wargaId}_{channel}"
+  actionUrl     String?   // Tautan langsung ke detail pengajuan / pengaduan / pengumuman
+  isRead        Boolean   @default(false)
+  metadata      String?   // JSON data tambahan jika perlu
+  retryCount    Int       @default(0)
+  sentAt        DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  userId        String?
+  wargaId       String?
+
+  user          User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  warga         Warga?    @relation(fields: [wargaId], references: [id], onDelete: SetNull)
+
+  @@index([type])
+  @@index([channel])
+  @@index([status])
+  @@index([isRead])
+  @@index([referenceId])
+  @@index([createdAt])
+}
+
+model Pengaduan {
+  id        String   @id @default(uuid())
+  judul     String
+  kategori  String   // FASILITAS_UMUM, KEBERSIHAN, KEAMANAN, DRAINASE, JALAN, LAINNYA
+  deskripsi String
+  lokasi    String
+  status    String   @default("DILAPORKAN") // DILAPORKAN, DITINJAU, DIPROSES, SELESAI, DITOLAK
+  pelaporId String
+  rtId      String
+  rwId      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pelapor   Warga              @relation(fields: [pelaporId], references: [id])
+  rt        Rt                 @relation(fields: [rtId], references: [id])
+  rw        Rw                 @relation(fields: [rwId], references: [id])
+  history   PengaduanHistory[]
+
+  @@index([pelaporId])
+  @@index([rtId])
+  @@index([rwId])
+  @@index([status])
+}
+
+model PengaduanHistory {
+  id          String   @id @default(uuid())
+  pengaduanId String
+  status      String   // DILAPORKAN, DITINJAU, DIPROSES, SELESAI, DITOLAK
+  catatan     String?
+  authorId    String
+  createdAt   DateTime @default(now())
+
+  pengaduan   Pengaduan @relation(fields: [pengaduanId], references: [id], onDelete: Cascade)
+  author      User      @relation(fields: [authorId], references: [id])
+
+  @@index([pengaduanId])
+}
+
+model SystemConfig {
+  id                   String    @id @default("default")
+
+  // 1. Konfigurasi Umum Sistem
+  appName              String    @default("Sistem Informasi Pelayanan Digital RW")
+  rwNomor              String    @default("05")
+  kelurahan            String?   @default("Mekarwangi")
+  kecamatan            String?   @default("Bojongloa Kidul")
+  kota                 String?   @default("Bandung")
+  kontakEmail          String?   @default("pengurus.rw@example.com")
+  kontakWa             String?   @default("081234567890")
+  alamatSekretariat    String?   @default("Jl. Balai RW No. 1")
+  deskripsiSistem      String?   @default("Sistem pelayanan publik dan administrasi kependudukan digital tingkat RW berbasis Web dan AI.")
+
+  // 2. Manajemen Provider WhatsApp
+  activeWaProvider     String    @default("FONNTE") // FONNTE, GATEWAY_SENDIRI, META_CLOUD
+
+  // Fonnte Settings
+  fonnteToken          String?   // Encrypted AES-256-GCM
+  fonnteCountryCode    String    @default("62")
+  fonnteStatus         String    @default("UNCONFIGURED") // ACTIVE, READY, UNCONFIGURED, FAILED
+  fonnteLastTestedAt   DateTime?
+  fonnteLastError      String?
+  fonnteDeviceInfo     String?   // JSON string: device number, name, package, quota, expired
+
+  // Gateway Sendiri Settings
+  gatewayUrl           String?
+  gatewayToken         String?   // Encrypted AES-256-GCM
+  gatewayStatus        String    @default("UNCONFIGURED") // ACTIVE, READY, UNCONFIGURED, FAILED
+  gatewayLastTestedAt  DateTime?
+  gatewayLastError     String?
+
+  // Meta Cloud API Settings
+  metaPhoneNumberId    String?
+  metaAccessToken      String?   // Encrypted AES-256-GCM
+  metaApiVersion       String    @default("v21.0")
+  metaStatus           String    @default("UNCONFIGURED")
+  metaLastTestedAt     DateTime?
+  metaLastError        String?
+
+  // 3. Konfigurasi Email SMTP
+  smtpHost             String?
+  smtpPort             Int       @default(587)
+  smtpSecure           Boolean   @default(false)
+  smtpUser             String?
+  smtpPass             String?   // Encrypted AES-256-GCM
+  smtpFrom             String?
+  smtpStatus           String    @default("UNCONFIGURED") // READY, UNCONFIGURED, FAILED
+  smtpLastTestedAt     DateTime?
+  smtpLastError        String?
+
+  // 4. Pengaturan Kanal Notifikasi
+  emailEnabled         Boolean   @default(true)
+  whatsappEnabled      Boolean   @default(true)
+  inAppEnabled         Boolean   @default(true)
+
+  // Pengaturan per modul
+  notifyPengumumanEmail Boolean  @default(true)
+  notifyPengumumanWa    Boolean  @default(true)
+  notifySuratEmail      Boolean  @default(true)
+  notifySuratWa         Boolean  @default(true)
+  notifyPengaduanEmail  Boolean  @default(true)
+  notifyPengaduanWa     Boolean  @default(true)
+
+  // 5. Konfigurasi Chatbot AI (Google Gemini)
+  chatbotEnabled       Boolean   @default(true)
+  aiProvider           String    @default("GOOGLE_GEMINI") // GOOGLE_GEMINI
+  aiModel              String    @default("gemini-1.5-flash")
+  geminiApiKey         String?   // Encrypted AES-256-GCM
+  apiKeyBackup1        String?   // Encrypted AES-256-GCM (Cadangan 1)
+  apiKeyBackup2        String?   // Encrypted AES-256-GCM (Cadangan 2)
+  aiTemperature        Float     @default(0.2)
+  aiMaxTokens          Int       @default(2000)
+  aiSystemInstruction  String?
+  aiFallbackMessage    String?   @default("Maaf, saya tidak bisa menjawab pertanyaan tersebut. Silakan hubungi pengurus RT Anda atau sekretariat Balai RW 12 untuk konfirmasi lebih lanjut.")
+  aiOutOfScopeMessage  String?   @default("Sistem ini khusus melayani kebutuhan informasi dan administrasi warga RW 12 Harjamukti. Anda dapat menanyakan perihal layanan surat pengantar, status pengajuan, pengaduan fasilitas lingkungan, atau pengumuman kegiatan warga.")
+  aiStatus             String    @default("UNCONFIGURED") // ACTIVE, READY, UNCONFIGURED, FAILED
+  aiLastTestedAt       DateTime?
+  aiLastError          String?
+
+  updatedAt            DateTime  @updatedAt
+  updatedBy            String?
+}
+
+model ConnectionTestLog {
+  id          String   @id @default(uuid())
+  provider    String   // FONNTE, GATEWAY_SENDIRI, META_CLOUD, SMTP_EMAIL
+  testType    String   // CONNECTION_PING, TEST_MESSAGE, TEST_EMAIL
+  target      String?  // Sanitized recipient
+  status      String   // SUCCESS, FAILED
+  statusCode  Int?
+  latencyMs   Int?
+  message     String?  // Sanitized message or error summary
+  triggeredBy String?  // Admin username
+  createdAt   DateTime @default(now())
+
+  @@index([provider])
+  @@index([status])
+  @@index([createdAt])
+}

@@ -1,0 +1,16 @@
+{
+  "id": "VQzTPxRglepZZUxM",
+  "messages": [
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "siapa saya?"
+        }
+      ],
+      "id": "vgMIpTrszZXiLeeR",
+      "role": "user"
+    }
+  ],
+  "trigger": "submit-message"
+}

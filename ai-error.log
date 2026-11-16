@@ -1,0 +1,14 @@
+API key not valid. Please pass a valid API key.
+AI_APICallError: API key not valid. Please pass a valid API key.
+    at C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_@ai-sdk_provider-utils_dist_index_1afcz0a.js:4053:24
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async postToApi (C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_@ai-sdk_provider-utils_dist_index_1afcz0a.js:3764:36)
+    at async postJsonToApi (C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_@ai-sdk_provider-utils_dist_index_1afcz0a.js:3725:123)
+    at async _GoogleLanguageModel.doStream (C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_@ai-sdk_google_dist_index_0mak086.js:2080:54)
+    at async execute (C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_ai_dist_index_16zsbns.js:8675:28)
+    at async runWithTracingChannelSpan (C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_ai_dist_index_16zsbns.js:4610:16)
+    at async executeLanguageModelCall (C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_ai_dist_index_16zsbns.js:4787:20)
+    at async streamLanguageModelCall (C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_ai_dist_index_16zsbns.js:8673:64)
+    at async retryWithExponentialBackoffInternal (C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_@ai-sdk_provider-utils_dist_index_1afcz0a.js:3922:16)
+    at async streamStep (C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_ai_dist_index_16zsbns.js:10244:54)
+    at async C:\laragon\www\Projek RPL\.next\dev\server\chunks\node_modules_ai_dist_index_16zsbns.js:10728:13
