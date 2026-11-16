@@ -23,25 +23,25 @@ export default function LoginPage() {
         <form action={formAction} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
             <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>Username</label>
-            <input 
-              type="text" 
-              id="username" 
-              name="username" 
-              required 
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
               style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--foreground)' }}
             />
           </div>
           <div>
             <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>Password</label>
-            <input 
-              type="password" 
-              id="password" 
-              name="password" 
-              required 
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
               style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--foreground)' }}
             />
           </div>
-          
+
           <button type="submit" className="btn btn-primary" disabled={isPending} style={{ marginTop: '1rem' }}>
             {isPending ? 'Logging in...' : 'Masuk'}
           </button>
@@ -56,10 +56,10 @@ export default function LoginPage() {
           </div>
           <Link href="/" style={{ color: 'var(--secondary-foreground)', fontSize: '0.8125rem' }}>&larr; Kembali ke Beranda</Link>
         </div>
-        
+
         <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: 'var(--secondary)', borderRadius: 'var(--radius-md)', fontSize: '0.75rem' }}>
-          <strong>Akun Demo:</strong><br/>
-          superadmin | adminrw | ketuarw | ketuart | warga1<br/>
+          <strong>Akun Demo:</strong><br />
+          superadmin | adminrw | ketuarw | ketuart | warga1<br />
           <em>Password: password123</em>
         </div>
       </div>
