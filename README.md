@@ -1,9 +1,22 @@
+## 👨‍🎓 Identitas Mahasiswa
+- **Nama:** Muhamad Arka Saputra
+- **NIM:** 41257120
+- **Kelas:** TI 1B 2025
+- **Kelompok:** KELOMOK TULIP
+- **Tema Topik Kelompok:** layanan digitalisasi rw
+
+**Fitur AI (Kecerdasan Buatan) yang Diintegrasikan:**
+- **AI Support 24/7:** Asisten cerdas berbasis AI yang terintegrasi untuk membantu warga menjawab FAQ seputar persyaratan layanan, panduan pengajuan dokumen, dan informasi administratif lingkungan secara real-time.
+
 ## 📊 Dokumentasi & Presentasi
 
 - [Tonton Video Presentasi di YouTube](https://youtu.be/NeqihpoLGjs?si=BX6jnaWl4YnxWUzn)
-- [Unduh Laporan Diagram Arsitektur (PDF)](https://drive.google.com/file/d/1p8R12NyaApLN28p5dlpbNTZ7TdZYfy1G/view?usp=sharing)
+- [Unduh Laporan Diagram Arsitektur (PDF)](https://drive.google.com/file/d/1G9IQ4_Ndrqnd1U9hKvaykNK9-zVM-Fb6/view?usp=sharing)
+- [Permodelan UI/UX (PDF)](https://drive.google.com/file/d/1VsZRGzBgcJGq0UA2uTlTidrNKRLSHvCH/view?usp=sharing) maaf pa sudah berusaha semaksimal mungkin^^
+- [Laporan PRD(PDF)](https://drive.google.com/file/d/1JHR8HHeKOEI7icPRkdKwiAnyZWXjXnRV/view?usp=sharing)
+- [LaporanPengujiandanCICD(PDF )](https://drive.google.com/file/d/1kPJedH9jkfoZcQnHbNUc34u_iZFAyVaq/view?usp=sharing)
 
-
+######
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
