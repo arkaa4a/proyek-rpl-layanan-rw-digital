@@ -2,11 +2,15 @@
 - **Nama:** Muhamad Arka Saputra
 - **NIM:** 41257120
 - **Kelas:** TI 1B 2025
-- **Kelompok:** KELOMOK TULIP
-- **Tema Topik Kelompok:** layanan digitalisasi rw
+- **Kelompok:** KELOMPOK TULIP
+- **Tema Topik Kelompok:** Sistem Informasi Layanan Digitalisasi RW
 
 **Fitur AI (Kecerdasan Buatan) yang Diintegrasikan:**
 - **AI Support 24/7:** Asisten cerdas berbasis AI yang terintegrasi untuk membantu warga menjawab FAQ seputar persyaratan layanan, panduan pengajuan dokumen, dan informasi administratif lingkungan secara real-time.
+Aplikasi ini dilengkapi dengan modul **AI Assistant (Smart Support 24/7)** yang terintegrasi langsung pada antarmuka pengguna untuk memberikan layanan cerdas kepada warga:
+1. **Automated FAQ & Knowledge Base:** Asisten AI dirancang untuk menjawab pertanyaan umum dari warga secara otomatis terkait prosedur pengajuan surat (seperti Surat Keterangan Domisili, Surat Pengantar Nikah, atau Surat Usaha) tanpa harus menunggu konfirmasi manual dari pengurus RW.
+2. **Panduan Persyaratan Dokumen:** AI dapat memberikan informasi instan mengenai syarat-syarat berkas yang harus diunggah oleh warga berdasarkan jenis layanan yang dipilih.
+3. **Efisiensi Layanan Administratif:** Membantu mengurangi beban kerja pengurus RW dalam melayani pertanyaan berulang (*repetitive questions*) dari warga secara *real-time* sepanjang 24 jam.
 
 ## 📊 Dokumentasi & Presentasi
 
