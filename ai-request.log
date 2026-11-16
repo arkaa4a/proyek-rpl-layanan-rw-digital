@@ -1,5 +1,5 @@
 {
-  "id": "VQzTPxRglepZZUxM",
+  "id": "QjCDnljtodMIrFPk",
   "messages": [
     {
       "parts": [
@@ -8,7 +8,87 @@
           "text": "siapa saya?"
         }
       ],
-      "id": "vgMIpTrszZXiLeeR",
+      "id": "Q3jzVody08bcEXEj",
+      "role": "user"
+    },
+    {
+      "id": "yBnHcQvCQOaHEAQJ",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "text",
+          "text": "Anda adalah **budi_budi** (Anda sedang login sebagai budii). Saat ini, Anda sedang menggunakan akun **WARGA** pada Sistem Informasi Pelayanan Digital RW. Saya dapat membantu Anda mengakses informasi lingkungan, mengajukan layanan surat, memantau status pengajuan, serta menyampaikan pengaduan sesuai data dan hak akses akun Anda.",
+          "providerMetadata": {
+            "google": {
+              "thoughtSignature": "EmAKXgFpFH0T11+7CXmsEeemu5fdcGaaZBfq1jbJPwytJ4CrysdwslSnIj6TRKbaSiuXgG0/zo+3lkSUMjKSEiKcZJiUhPmdjJJs39KyFPfKQ3sp0oC7YS5T9EBDg6EI5A8="
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "ada berapa pengajuan saya yang sudah selesai?"
+        }
+      ],
+      "id": "IjOesOCXCD1jvZiL",
+      "role": "user"
+    },
+    {
+      "id": "dbQlHxqrEtnivlmp",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "tool-check_request_status",
+          "toolCallId": "call_7665274613719349388",
+          "state": "output-available",
+          "input": {},
+          "output": {
+            "message": "Anda belum memiliki riwayat pengajuan surat apapun di sistem."
+          },
+          "callProviderMetadata": {
+            "google": {
+              "thoughtSignature": "EmAKXgFpFH0T/mM7yhJ4QylDfQzt0/pT+7/gneELnVzqKgpXb1v9R9TtoMPlqeGc7VzRgwpwFXdXPBO5oNZ64e5UZJA4p9g7BQ5BTp14m3OggCiZM7Jr9Kc2BWdj3bB+fJU="
+            }
+          },
+          "resultProviderMetadata": {
+            "google": {
+              "thoughtSignature": "EmAKXgFpFH0T/mM7yhJ4QylDfQzt0/pT+7/gneELnVzqKgpXb1v9R9TtoMPlqeGc7VzRgwpwFXdXPBO5oNZ64e5UZJA4p9g7BQ5BTp14m3OggCiZM7Jr9Kc2BWdj3bB+fJU="
+            }
+          }
+        },
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "text",
+          "text": "Anda belum memiliki riwayat pengajuan surat yang sudah selesai di sistem. Belum ada pengajuan surat yang tercatat atas akun Anda.",
+          "providerMetadata": {
+            "google": {
+              "thoughtSignature": "EmAKXgFpFH0Tf+rF44iPd488Wwo+MXWrIRSJokIs1nI3XvCUwumEEytM2vA/a6Ef7iryjKuxZ+lc+JQKzFG2E3q/rw7VzCPWsvYF2aZ9D19u2/DLoOSamss4dYR8yWc/YFc="
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "ada pengumuman apa?"
+        }
+      ],
+      "id": "U2b3Jaen4viVe1BM",
       "role": "user"
     }
   ],

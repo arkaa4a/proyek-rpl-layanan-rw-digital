@@ -47,8 +47,14 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem' }}>
-          <Link href="/" style={{ color: 'var(--primary)' }}>&larr; Kembali ke Beranda</Link>
+        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div>
+            Belum memiliki akun warga?{' '}
+            <Link href="/register" style={{ color: 'var(--primary)', fontWeight: 600 }}>
+              Daftar Sekarang &rarr;
+            </Link>
+          </div>
+          <Link href="/" style={{ color: 'var(--secondary-foreground)', fontSize: '0.8125rem' }}>&larr; Kembali ke Beranda</Link>
         </div>
         
         <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: 'var(--secondary)', borderRadius: 'var(--radius-md)', fontSize: '0.75rem' }}>

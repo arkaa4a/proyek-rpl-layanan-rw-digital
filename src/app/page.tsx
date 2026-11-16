@@ -12,7 +12,7 @@ export default function Home() {
           Ajukan surat pengantar, cek status, dan dapatkan dokumen resmi ber-QR Code dengan mudah.
         </p>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-          <Link href="/login" className="btn btn-primary" style={{ padding: '0.75rem 1.5rem', fontSize: '1rem' }}>
+          <Link href="/login" className="btn btn-primary" style={{ padding: '0.75rem 1.75rem', fontSize: '1rem' }}>
             Masuk / Mulai Pengajuan
           </Link>
         </div>

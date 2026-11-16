@@ -7,13 +7,17 @@ export async function createSession(payload: SessionPayload) {
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 Hari
   const session = await encrypt(payload);
 
-  (await cookies()).set("session", session, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    expires: expiresAt,
-    sameSite: "lax",
-    path: "/",
-  });
+  try {
+    (await cookies()).set("session", session, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: expiresAt,
+      sameSite: "lax",
+      path: "/",
+    });
+  } catch {
+    (globalThis as any).__TEST_SESSION_COOKIE__ = session;
+  }
 }
 
 export async function deleteSession() {

@@ -6,7 +6,7 @@ import { AI_SYSTEM_PROMPT, RW_KNOWLEDGE_BASE, formatLingkunganInfo, formatPengum
 import { getDecryptedSystemConfig } from '@/lib/config/systemConfigService';
 import { z } from 'zod';
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 // In-memory rate limiting map (IP -> { count, resetAt })
 // Keterbatasan: Ini adalah penyimpanan stateful per-instance dalam lingkungan serverless.
@@ -1575,7 +1575,16 @@ Jika pengguna menanyakan tentang pengumuman, jadwal, rapat, atau kegiatan RW, KA
       } as any);
     }
 
-    const modelId = systemConfig.aiModel || 'gemini-1.5-flash';
+    let modelId = systemConfig.aiModel || 'gemini-3.5-flash-lite';
+    if (
+      modelId === 'gemini-1.5-flash' ||
+      modelId === 'gemini-1.5-pro' ||
+      modelId === 'gemini-2.0-flash' ||
+      modelId === 'gemini-2.5-flash' ||
+      modelId === 'gemini-2.5-flash-lite'
+    ) {
+      modelId = 'gemini-3.5-flash-lite';
+    }
 
     const temperature =
       typeof systemConfig.aiTemperature === 'number'
@@ -1597,7 +1606,9 @@ Jika pengguna menanyakan tentang pengumuman, jadwal, rapat, atau kegiatan RW, KA
       const googleProvider = createGoogleGenerativeAI({ apiKey });
 
       const result = await streamText({
-        model: googleProvider(modelId),
+        model: (googleProvider as any)(modelId, {
+          thinking: { type: 'disabled' },
+        }),
         system: systemPrompt,
         messages: coreMessages as any,
         tools: aiTools,
