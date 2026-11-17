@@ -16,7 +16,7 @@ Aplikasi ini dilengkapi dengan modul **AI Assistant (Smart Support 24/7)** yang 
 
 - [Tonton Video Presentasi di YouTube](https://youtu.be/NeqihpoLGjs?si=BX6jnaWl4YnxWUzn)
 - [Unduh Laporan Diagram Arsitektur (PDF)](https://drive.google.com/file/d/1G9IQ4_Ndrqnd1U9hKvaykNK9-zVM-Fb6/view?usp=sharing)
-- [Permodelan UI/UX (PDF)](https://drive.google.com/file/d/1VsZRGzBgcJGq0UA2uTlTidrNKRLSHvCH/view?usp=sharing) maaf pa sudah berusaha semaksimal mungkin^^
+- [Permodelan UI/UX (PDF)](https://drive.google.com/file/d/1EKRNWokXpGwlix2RcP9bFpMDmaQVycT0/view?usp=sharing)
 - [Laporan PRD(PDF)](https://drive.google.com/file/d/1JHR8HHeKOEI7icPRkdKwiAnyZWXjXnRV/view?usp=sharing)
 - [LaporanPengujiandanCICD(PDF )](https://drive.google.com/file/d/1kPJedH9jkfoZcQnHbNUc34u_iZFAyVaq/view?usp=sharing)
 
